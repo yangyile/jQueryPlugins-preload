@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预加载插件demo</title>
+    <link rel="stylesheet" href="libs/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/preload.css">
+    <script type="text/javascript" src="libs/js/jquery-3.2.1.js"></script>
+    <script src="libs/js/bootstrap.min.js"></script>
+    <script src="js/preload.js"></script>
+</head>
+<body>
+<div id="slide">
+    <img src="images/img1.jpg" alt="img1" width="900" id="img">
+    <p class="text-center">
+        <span class="btn btn-primary" data-control="prev">prev</span>
+        <span class="btn btn-primary" data-control="next">next</span>
+    </p>
+</div>
+<!-- <div class="loading">
+    <p class="pro-text">0%</p>
+</div> -->
+    <script type="text/javascript">
+        var imgs = [];
+
+        for(var i = 0;i < 7;i++) {
+            imgs[i] = "http://oxbw628i7.bkt.clouddn.com/images/img" + (i + 1) + ".jpg";
+        }
+
+        var $progress = $(".pro-text"),
+            index = 0,
+            len = imgs.length;
+
+/*        $.preload(imgs, {
+            eachOnLoad: function(count) {
+                $progress.html(Math.round(count / len * 100) + "%");
+            },
+            allOnLoad: function() {
+                $(".loading").hide();
+                $("#img").attr("src", imgs[0]);
+                document.title = 1 + "/" + len;
+            }
+        });*/
+
+        $.preload(imgs, {ordered: true});
+
+        $(".btn").click(function() {
+            if("prev" === $(this).data("control")) {
+                index = Math.max(0, --index);
+            } else {
+                index = Math.min(len - 1, ++index);
+            }
+
+            document.title = (index + 1) + "/" + len;
+            $("#img").attr("src", imgs[index]);
+        });
+    </script>
+</body>
+</html>
